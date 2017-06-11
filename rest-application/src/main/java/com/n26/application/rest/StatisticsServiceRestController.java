@@ -49,20 +49,21 @@ public class StatisticsServiceRestController {
             logger.debug("Record transaction request : {}", request);
         }
         MultiValueMap<String, String> responseHeader = new HttpHeaders();
+        HttpStatus status = HttpStatus.CREATED;
         try {
             getStatisticsService().recordTransactions(request);
         } catch(TransactionExpiredException e) {
             responseHeader.add(RESPONSE_STATUS, RESPONSE_ERROR);
-            return new ResponseEntity<Object>(responseHeader, HttpStatus.NO_CONTENT);
+            status = HttpStatus.NO_CONTENT;
         } catch (StatisticsServiceValidationException e) {
             responseHeader.add(RESPONSE_STATUS, RESPONSE_ERROR);
-            return new ResponseEntity<Object>(e.getErrors(), responseHeader, HttpStatus.INTERNAL_SERVER_ERROR);
+            status = HttpStatus.BAD_REQUEST;
         } catch (StatisticsServiceException e) {
             responseHeader.add(RESPONSE_STATUS, RESPONSE_ERROR);
-            return new ResponseEntity<Object>(responseHeader, HttpStatus.INTERNAL_SERVER_ERROR);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         responseHeader.add(RESPONSE_STATUS, RESPONSE_SUCCESS);
-        return new ResponseEntity<Object>(responseHeader, HttpStatus.CREATED);
+        return new ResponseEntity<Object>(responseHeader, status);
     }
 
     @GetMapping(value = GET_STATISTICS, consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
@@ -72,14 +73,15 @@ public class StatisticsServiceRestController {
         }
         MultiValueMap<String, String> responseHeader = new HttpHeaders();
         TransactionsStatisticsResponse response = null;
+        HttpStatus status = HttpStatus.CREATED;
         try {
             response = getStatisticsService().getStatistics();
         } catch (StatisticsServiceException e) {
             responseHeader.add(RESPONSE_STATUS, RESPONSE_ERROR);
-            return new ResponseEntity<Object>(responseHeader, HttpStatus.INTERNAL_SERVER_ERROR);
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         responseHeader.add(RESPONSE_STATUS, RESPONSE_SUCCESS);
-        return new ResponseEntity<Object>(response, responseHeader, HttpStatus.CREATED);
+        return new ResponseEntity<Object>(response, responseHeader, status);
     }
 
     public StatisticsService getStatisticsService() {
