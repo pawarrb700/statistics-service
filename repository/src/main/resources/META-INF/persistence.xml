@@ -6,7 +6,7 @@
     <persistence-unit name="statisticsServiceUnit" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-        <class>com.n26.application.entity.TransactionEntity</class>
+        <class>com.test.application.entity.TransactionEntity</class>
 
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:statistics_database;"/>
