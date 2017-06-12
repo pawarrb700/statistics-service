@@ -11,6 +11,10 @@ Project Structure :
 7. main-application : spring boot main application class
 8. parent : contains pom.xml used for dependency management in sub modules
 
+Statistics service exposes two apis :
+1. /transactions : This POST api records transactions with amount of transaction and timestamp i.e transaction time.
+2. /statistics : This GET api returns statistics of transactions from last 60 seconds. Statistics involves sum of transaction amount, average of amount, maximum and minimum amount amongs transactions and count of transaction.
+ 
 To run statistics-service : run 'mvn clean install' in statistics-service.
 
 To deploy application : goto /main-application/target/ and run
